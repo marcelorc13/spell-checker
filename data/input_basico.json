@@ -1,0 +1,15 @@
+{
+  "dictionary": [
+    {"word": "hello", "freq": 1500},
+    {"word": "help", "freq": 1200},
+    {"word": "held", "freq": 800},
+    {"word": "world", "freq": 1100},
+    {"word": "word", "freq": 900},
+    {"word": "cat", "freq": 700},
+    {"word": "cut", "freq": 600},
+    {"word": "cart", "freq": 500},
+    {"word": "card", "freq": 450},
+    {"word": "care", "freq": 400}
+  ],
+  "queries": ["helo", "wrold", "xyz", "ct", "crd"]
+}
