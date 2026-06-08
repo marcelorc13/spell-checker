@@ -2,7 +2,7 @@ build:
 	go build -o bin/spell-checker ./src/
 
 run:
-	bin/spell-checker -input data/input_basico.json -output data/output.json
+	bin/spell-checker -input $(input)
 
 test:
 	go test ./...

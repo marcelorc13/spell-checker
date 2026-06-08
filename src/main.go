@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"strings"
 
 	appfuzzy "github.com/marceloramalho/spell-checker/src/fuzzy"
 	appio "github.com/marceloramalho/spell-checker/src/io"
@@ -12,8 +13,8 @@ import (
 )
 
 func main() {
-	inputPath := flag.String("input", "data/input_basico.json", "input file")
-	outputPath := flag.String("output", "data/output.json", "output file")
+	defaultInputPath := "data/input_basico.json"
+	inputPath := flag.String("input", defaultInputPath, "input file")
 	flag.Parse()
 
 	input, err := appio.ReadInput(*inputPath)
@@ -42,7 +43,20 @@ func main() {
 		})
 	}
 
-	if err := appio.WriteOutput(*outputPath, output); err != nil {
+	dp := "out"
+	fn := strings.SplitAfter(*inputPath, "_")[1]
+
+	outputPath := fmt.Sprintf("%s/output_%s", dp, fn)
+
+	if _, err := os.Stat(dp); os.IsNotExist(err) {
+		err := os.Mkdir(dp, 0755)
+		if err != nil {
+			fmt.Println("Error creating directory:", err)
+			return
+		}
+	}
+
+	if err := appio.WriteOutput(outputPath, output); err != nil {
 		fmt.Fprintf(os.Stderr, "write output: %v\n", err)
 		os.Exit(1)
 	}
