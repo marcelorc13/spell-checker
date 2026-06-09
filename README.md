@@ -9,16 +9,16 @@
 
 Módulo preditivo de correção ortográfica com tolerância a erros de digitação. Implementa:
 
-- **Trie** (`map[rune]*Node`) - carregamento do dicionário com compressão de prefixos
-- **Busca aproximada por DFS** - Levenshtein com carry de linha e poda (≤ 2 edições)
-- **MergeSort** - ordenação das sugestões por frequência decrescente (implementação manual)
+- **Árvore Genêrica / Trie** -> carregamento do dicionário com compressão de prefixos
+- **Busca aproximada por DFS** -> Levenshtein com carry de linha e poda (≤ 2 edições)
+- **MergeSort** -> ordenação das sugestões por frequência decrescente 
 
 ---
 
 ## Pré-requisitos
 
-- [Go](https://go.dev/doc/install) — versão 1.21 ou superior
-- [Make](https://www.gnu.org/software/make/) — para execução via Makefile
+- [Go](https://go.dev/doc/install) - versão 1.21 ou superior
+- [Make](https://www.gnu.org/software/make/) - para execução via Makefile
 
 ---
 
@@ -82,7 +82,9 @@ Isso executa `bin/gen-dict` e sobrescreve `data/input_estresse.json`.
 ```
 /
 ├── src/
-│   ├── cmd/spell-checker/main.go
+│   ├── cmd/
+│   │   ├── spell-checker/main.go
+│   │   └── gen-dict/main.go
 │   ├── trie/          # Trie + Node
 │   ├── fuzzy/         # DFS + Levenshtein
 │   ├── sort/          # MergeSort
@@ -94,9 +96,7 @@ Isso executa `bin/gen-dict` e sobrescreve `data/input_estresse.json`.
 │   ├── output_esperado_basico.json
 │   └── output_esperado_avancado.json
 ├── docs/
-│   └── complexity.md
-├── tools/
-│   └── gen_dict.go
+│   └── complexidade.md
 ├── Makefile
 └── README.md
 ```
