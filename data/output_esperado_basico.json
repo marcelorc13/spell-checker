@@ -1,0 +1,42 @@
+{
+  "results": [
+    {
+      "query": "helo",
+      "suggestions": [
+        "hello",
+        "help",
+        "held"
+      ]
+    },
+    {
+      "query": "wrold",
+      "suggestions": [
+        "world",
+        "word"
+      ]
+    },
+    {
+      "query": "xyz",
+      "suggestions": []
+    },
+    {
+      "query": "ct",
+      "suggestions": [
+        "cat",
+        "cut",
+        "cart"
+      ]
+    },
+    {
+      "query": "crd",
+      "suggestions": [
+        "word",
+        "cat",
+        "cut",
+        "cart",
+        "card",
+        "care"
+      ]
+    }
+  ]
+}
