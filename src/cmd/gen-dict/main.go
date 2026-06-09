@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math/rand"
 	"os"
+	"time"
 )
 
 type DictEntry struct {
@@ -59,6 +60,9 @@ const dictSize = 200000
 const querySize = 1000
 
 func main() {
+	t0 := time.Now()
+	fmt.Printf("\nseed=42, dictSize=%d, querySize=%d\n", dictSize, querySize)
+
 	rng := rand.New(rand.NewSource(42))
 
 	// freqs are a shuffled permutation of 1..dictSize so every word has a
@@ -83,12 +87,13 @@ func main() {
 		dict = append(dict, DictEntry{Word: w, Freq: freqs[len(dict)]})
 		words = append(words, w)
 	}
+	fmt.Printf("dictionary ready: %d words\n", len(dict))
 
 	queries := make([]string, 0, querySize)
-	for q := 0; q < querySize; q++ {
+	for range querySize {
 		src := []rune(words[rng.Intn(len(words))])
 		edits := 1 + rng.Intn(2) // 1 or 2 edits -> distance <= 2
-		for e := 0; e < edits; e++ {
+		for range edits {
 			if len(src) == 0 {
 				break
 			}
@@ -105,18 +110,21 @@ func main() {
 		}
 		queries = append(queries, string(src))
 	}
+	fmt.Printf("queries generated: %d\n", len(queries))
 
+	outPath := "data/input_estresse.json"
 	input := Input{Dictionary: dict, Queries: queries}
 	out, err := json.MarshalIndent(input, "", "  ")
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "marshal:", err)
 		os.Exit(1)
 	}
-	if err := os.WriteFile("data/input_estresse.json", out, 0644); err != nil {
+	if err := os.WriteFile(outPath, out, 0644); err != nil {
 		fmt.Fprintln(os.Stderr, "write:", err)
 		os.Exit(1)
 	}
-	fmt.Printf("generated %d dictionary terms, %d queries\n", len(dict), len(queries))
+	fmt.Printf("wrote %s (%.1f MB)\n", outPath, float64(len(out))/1e6)
+	fmt.Printf("done. \ntotal: %s\n", time.Since(t0))
 }
 
 func randLetter(rng *rand.Rand) rune {

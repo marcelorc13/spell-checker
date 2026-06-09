@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"time"
 
 	appfuzzy "github.com/marceloramalho/spell-checker/src/fuzzy"
 	appio "github.com/marceloramalho/spell-checker/src/io"
@@ -17,11 +18,16 @@ func main() {
 	inputPath := flag.String("input", defaultInputPath, "input file")
 	flag.Parse()
 
+	fmt.Printf("\ninput: %s\n", *inputPath)
+
+	t0 := time.Now()
 	input, err := appio.ReadInput(*inputPath)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "read input: %v\n", err)
 		os.Exit(1)
 	}
+	fmt.Printf("loaded %d dictionary entries, %d queries \n",
+		len(input.Dictionary), len(input.Queries))
 
 	t := apptrie.New()
 	for _, entry := range input.Dictionary {
@@ -34,14 +40,15 @@ func main() {
 		suggestions = appsort.MergeSort(suggestions)
 
 		words := make([]string, len(suggestions))
-		for i, s := range suggestions {
-			words[i] = s.Word
+		for j, s := range suggestions {
+			words[j] = s.Word
 		}
 		output.Results = append(output.Results, appio.Result{
 			Query:       query,
 			Suggestions: words,
 		})
 	}
+	fmt.Printf("fuzzy search done \n")
 
 	dp := "out"
 	fn := strings.SplitAfter(*inputPath, "_")[1]
@@ -56,8 +63,10 @@ func main() {
 		}
 	}
 
+	fmt.Printf("writing output: %s\n", outputPath)
 	if err := appio.WriteOutput(outputPath, output); err != nil {
 		fmt.Fprintf(os.Stderr, "write output: %v\n", err)
 		os.Exit(1)
 	}
+	fmt.Printf("done. \ntotal: %s\n", time.Since(t0))
 }
